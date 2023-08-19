@@ -1,4 +1,4 @@
-use crate::nop_lib::Nop;
+use crate::nop_lib::Pandoc;
 use clap::{Arg, ArgMatches, Command};
 use mdbook::book::Book;
 use mdbook::errors::Error;
@@ -8,8 +8,8 @@ use std::io;
 use std::process;
 
 pub fn make_app() -> Command {
-    Command::new("nop-preprocessor")
-        .about("A mdbook preprocessor which does precisely nothing")
+    Command::new("pandoc-preprocessor")
+        .about("A mdbook preprocessor which runs your code through pandoc")
         .subcommand(
             Command::new("supports")
                 .arg(Arg::new("renderer").required(true))
@@ -21,7 +21,7 @@ fn main() {
     let matches = make_app().get_matches();
 
     // Users will want to construct their own preprocessor here
-    let preprocessor = Nop::new();
+    let preprocessor = Pandoc::new();
 
     if let Some(sub_args) = matches.subcommand_matches("supports") {
         handle_supports(&preprocessor, sub_args);
@@ -73,24 +73,24 @@ mod nop_lib {
     use super::*;
 
     /// A no-op preprocessor.
-    pub struct Nop;
+    pub struct Pandoc;
 
-    impl Nop {
-        pub fn new() -> Nop {
-            Nop
+    impl Pandoc {
+        pub fn new() -> Self {
+            Self
         }
     }
 
-    impl Preprocessor for Nop {
+    impl Preprocessor for Pandoc {
         fn name(&self) -> &str {
-            "nop-preprocessor"
+            "pandoc-preprocessor"
         }
 
         fn run(&self, ctx: &PreprocessorContext, book: Book) -> Result<Book, Error> {
             // In testing we want to tell the preprocessor to blow up by setting a
             // particular config value
-            if let Some(nop_cfg) = ctx.config.get_preprocessor(self.name()) {
-                if nop_cfg.contains_key("blow-up") {
+            if let Some(pandoc_cfg) = ctx.config.get_preprocessor(self.name()) {
+                if pandoc_cfg.contains_key("blow-up") {
                     anyhow::bail!("Boom!!1!");
                 }
             }
@@ -149,7 +149,7 @@ mod nop_lib {
 
             let (ctx, book) = CmdPreprocessor::parse_input(input_json).unwrap();
             let expected_book = book.clone();
-            let result = Nop::new().run(&ctx, book);
+            let result = Pandoc::new().run(&ctx, book);
             assert!(result.is_ok());
 
             // The nop-preprocessor should not have made any changes to the book content.
