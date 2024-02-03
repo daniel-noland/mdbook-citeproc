@@ -126,6 +126,7 @@ mod pandoc_lib {
 			let res: Option<Result<BookItem, Error>> = None;
 			let mut config: PandocConfig = HashMap::new();
 
+			let metadata = "/tmp/metadata.yml".to_string();
 			let mut from = "--from=markdown_strict".to_string();
 			let mut to = "--to=markdown_strict".to_string();
 
@@ -174,6 +175,7 @@ mod pandoc_lib {
 				parse_setting(&"mark".to_string(), &mut config);
 				parse_setting(&"markdown_in_html_blocks".to_string(), &mut config);
 
+
 				let config = config;
 
 				bibliography_config = if let Some(PandocSetting::Transpile) = config.get("citations") {
@@ -206,6 +208,7 @@ mod pandoc_lib {
 						command
 								.arg(format!("--csl={}", bibliography_config.bibliography_style))
 								.arg(format!("--bibliography={}", bibliography_config.bibliography))
+								.arg(format!("--metadata-file={}", metadata))
 								.arg("--citeproc")
 					} else {
 						command
