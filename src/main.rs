@@ -11,8 +11,8 @@ use semver::{Version, VersionReq};
 use crate::pandoc_lib::Pandoc;
 
 pub fn make_app() -> Command {
-	Command::new("pandoc-preprocessor")
-			.about("A mdbook preprocessor which runs your code through pandoc")
+	Command::new("citeproc-preprocessor")
+			.about("A mdbook preprocessor which runs your code through pandoc and citeproc")
 			.subcommand(
 				Command::new("supports")
 						.arg(Arg::new("renderer").required(true))
@@ -119,7 +119,7 @@ mod pandoc_lib {
 
 	impl Preprocessor for Pandoc {
 		fn name(&self) -> &str {
-			"pandoc"
+			"citeproc"
 		}
 
 		fn run(&self, ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {
