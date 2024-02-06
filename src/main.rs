@@ -126,7 +126,6 @@ mod pandoc_lib {
 			let res: Option<Result<BookItem, Error>> = None;
 			let mut config: PandocConfig = HashMap::new();
 
-			let metadata = "/tmp/metadata.yml".to_string();
 			let mut from = "--from=markdown_strict".to_string();
 			let mut to = "--to=markdown_strict".to_string();
 
