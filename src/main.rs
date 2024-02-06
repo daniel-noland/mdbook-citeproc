@@ -209,7 +209,8 @@ mod pandoc_lib {
 						command
 								.arg(format!("--csl={}", bibliography_config.bibliography_style))
 								.arg(format!("--bibliography={}", bibliography_config.bibliography))
-								.arg(format!("--metadata-file={}", metadata))
+								.arg("--metadata=link-citations")
+								.arg("--metadata=link-bibliography")
 								.arg("--citeproc")
 					} else {
 						command
