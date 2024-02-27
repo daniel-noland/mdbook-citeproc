@@ -174,6 +174,7 @@ mod pandoc_lib {
 				parse_setting(&"mark".to_string(), &mut config);
 				parse_setting(&"markdown_in_html_blocks".to_string(), &mut config);
 				parse_setting(&"link_attributes".to_string(), &mut config);
+				parse_setting(&"task_lists".to_string(), &mut config);
 
 
 				let config = config;
