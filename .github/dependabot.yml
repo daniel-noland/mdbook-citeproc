@@ -1,8 +1,18 @@
 version: 2
+
+
 updates:
-  - package-ecosystem: cargo
-    directory: "/"
-    target-branch: main
+  - package-ecosystem: "cargo"
+    target-branch: "main"
+    directories:
+      - /
     schedule:
-      interval: daily
-    open-pull-requests-limit: 10
+      interval: "daily"
+    groups:
+      dev-dependencies:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
